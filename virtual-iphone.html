@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Virtual iPhone 17</title>
+<style>
+:root{--page:#dcdce2;box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#0d0d10}}
+:root[data-theme="dark"]{--page:#0d0d10}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--page);display:flex;align-items:center;justify-content:center;font-family:-apple-system,"SF Pro Text","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif}
+.phone{position:relative;width:min(393px,100vw);height:min(852px,100dvh);overflow:hidden;border-radius:56px;box-shadow:0 0 0 9px #17171a,0 30px 80px rgba(0,0,0,.35);color:#111;user-select:none}
+@media (max-width:430px){.phone{border-radius:0;box-shadow:none}}
+.wall{position:absolute;inset:0}
+.wall:after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,0) 40%,rgba(255,255,255,.5))}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:35px;border-radius:20px;background:#000;z-index:90}
+.status{position:absolute;top:0;left:0;right:0;height:56px;padding:20px 30px 0 36px;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:16px;z-index:80;color:var(--sc,#000);pointer-events:none}
+.status span{display:flex;align-items:center;gap:5px}
+.bt{background:#1c1c1e;color:#fff;font-size:12px;padding:1px 6px;border-radius:7px;position:relative;margin-right:3px}
+.bt:after{content:"";position:absolute;right:-3px;top:5px;width:2px;height:5px;background:#1c1c1e;border-radius:0 2px 2px 0}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+#lock{text-align:center;padding-top:100px}
+#lock .d{font-size:19px;font-weight:600;opacity:.8}
+#lock .t{font-size:96px;font-weight:700;line-height:1;letter-spacing:-2px}
+.hint{position:absolute;bottom:36px;width:100%;font-size:14px;opacity:.6}
+.widgets{position:absolute;top:104px;left:18px;right:18px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.wl{text-align:center;font-size:12px;margin-top:8px;color:#222}
+.w{height:158px;border-radius:26px;overflow:hidden;position:relative;box-shadow:0 2px 10px rgba(0,0,0,.08);cursor:pointer}
+.cal{background:#fff;padding:14px 14px}
+.cal b{color:#ff3b30;font-size:12px;display:block}
+.cal i{font-style:normal;font-size:40px;font-weight:300;line-height:1.1}
+.ev{position:absolute;left:12px;right:12px;bottom:12px;background:#ececf0;border-radius:8px;padding:6px 10px 6px 12px;font-size:12px;font-weight:600;border-left:4px solid #8e8e93}
+.ev div{color:#777;font-weight:400}
+.nt{background:#fffdf4}
+.nt h4{margin:0;padding:10px 14px;background:#f3d44a;font-size:14px;color:#6b5400}
+.nt p{margin:0;padding:6px 14px;font-size:13px;font-weight:600;line-height:1.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grid{position:absolute;top:340px;left:0;right:0;padding:0 15px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px 0}
+.app{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;cursor:pointer;background:none;border:0;color:#111;font-family:inherit;padding:0}
+.ic{position:relative;width:62px;height:62px}
+.ib{width:100%;height:100%;border-radius:15px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.ib svg{width:100%;height:100%;display:block}
+.bd{position:absolute;top:-8px;right:-9px;min-width:24px;height:24px;border-radius:12px;background:#ff3b30;color:#fff;font:700 15px/24px inherit;font-style:normal;text-align:center;padding:0 6px;box-shadow:0 0 0 1.5px #fff8}
+.dots{position:absolute;bottom:128px;left:50%;transform:translateX(-50%);display:flex;gap:9px;padding:7px 12px;border-radius:14px;background:rgba(150,150,150,.3)}
+.dots i{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.5}.dots i:first-child{opacity:1}
+.dock{position:absolute;bottom:22px;left:14px;right:14px;height:94px;border-radius:36px;background:rgba(255,255,255,.35);backdrop-filter:blur(26px);display:flex;justify-content:space-around;align-items:center;box-shadow:inset 0 0 0 1px #fff5}
+.dock .app span{display:none}
+.notif{position:absolute;top:50px;left:10px;right:10px;padding:14px 16px;border-radius:34px;background:rgba(90,90,92,.88);backdrop-filter:blur(20px);color:#fff;display:flex;gap:12px;align-items:center;z-index:85;transform:translateY(-150%);transition:transform .45s cubic-bezier(.2,.9,.3,1.1);cursor:pointer}
+.notif.on{transform:none}
+.notif .ib{width:40px;height:40px;border-radius:10px;flex:none;box-shadow:none}
+.notif b{display:block;font-size:15px}.notif span{font-size:14px;opacity:.9}.notif small{margin-left:auto;opacity:.6;align-self:flex-start;font-size:13px}
+#app{background:#fff;z-index:30;border-radius:inherit}
+#app.on{animation:pop .28s ease}
+@keyframes pop{from{transform:scale(.88);opacity:0}}
+.hd{height:100px;padding:58px 18px 0;display:flex;align-items:center;gap:10px;font-size:20px;border-bottom:1px solid #0001;background:inherit}
+.sp{flex:1}
+.hd button,.bk{background:none;border:0;font-size:26px;cursor:pointer;color:inherit;padding:0 6px}
+.body{position:absolute;top:100px;bottom:34px;left:0;right:0;overflow-y:auto}
+.home-bar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:136px;height:5px;border-radius:3px;background:#111;opacity:.85;z-index:95;cursor:pointer}
+.row{display:flex;gap:12px;align-items:center;padding:12px 18px;cursor:pointer}
+.av{width:46px;height:46px;border-radius:17px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex:none}
+.fl{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.fl span{color:#777;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row small{color:#999}
+.chat{background:#b2c7da;padding:14px 12px;display:flex;flex-direction:column;gap:8px;bottom:94px}
+.m{max-width:72%;padding:8px 12px;border-radius:14px;background:#fff;font-size:15px;line-height:1.35;word-break:break-word}
+.m.me{align-self:flex-end;background:#fee500}
+.bar{position:absolute;bottom:34px;left:0;right:0;height:60px;display:flex;gap:8px;padding:10px;background:#fff;border-top:1px solid #0001}
+.bar input,.bar button{font:inherit;font-size:15px}
+.bar input{flex:1;border:1px solid #ddd;border-radius:20px;padding:0 14px;outline:0}
+.bar button{border:0;background:#fee500;border-radius:20px;padding:0 16px;cursor:pointer}
+.logo{font-family:"Snell Roundhand","Brush Script MT",cursive;font-size:30px}
+.stories{display:flex;gap:12px;padding:12px 14px;overflow-x:auto}
+.st{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;flex:none}
+.st i{width:62px;height:62px;border-radius:50%;padding:3px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf);display:block}
+.st b{width:100%;height:100%;border-radius:50%;border:3px solid #fff;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px}
+.post .u{display:flex;align-items:center;gap:10px;padding:8px 14px;font-weight:600;font-size:14px}
+.post .u .av{width:32px;height:32px;border-radius:50%;font-size:14px}
+.pic{height:300px;display:flex;align-items:center;justify-content:center;font-size:90px}
+.post .a{padding:8px 14px 0;font-size:24px;display:flex;gap:14px}
+.post .a button{background:none;border:0;font-size:24px;cursor:pointer;padding:0}
+.post .c{padding:4px 14px 16px;font-size:14px;line-height:1.4}
+.na{position:absolute;inset:0;background:#f2f2f7}
+.na .hd{background:#f2f2f7}
+.nl{margin:12px 16px;background:#fff;border-radius:12px;overflow:hidden}
+.ni{padding:10px 16px;border-bottom:1px solid #0001;cursor:pointer}
+.ni:last-child{border:0}
+.ni span{color:#888;font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ed{position:absolute;inset:100px 0 34px;padding:6px 18px;display:flex;flex-direction:column;background:#fff}
+.ed input,.ed textarea{border:0;outline:0;font-family:inherit;color:#111;background:none;width:100%}
+.ed input{font-size:24px;font-weight:700;padding:8px 0}
+.ed textarea{flex:1;font-size:17px;line-height:1.45;resize:none}
+.toast{position:absolute;bottom:130px;left:50%;transform:translateX(-50%);background:#000c;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;z-index:99;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+.wall.photo:after{display:none}
+.modal{position:absolute;inset:0;background:#0006;z-index:92;display:flex;align-items:center;justify-content:center}
+.modal>div{background:#fff;border-radius:18px;padding:18px;width:280px;display:flex;flex-direction:column;gap:12px}
+.modal input{border:1px solid #ddd;border-radius:10px;padding:10px;font:inherit;font-size:16px;outline:0}
+.bt2{display:flex;gap:8px;justify-content:flex-end}
+.tg,.bar .tg{border:0;background:#e8e8ed;border-radius:20px;padding:7px 13px;cursor:pointer;font:inherit;font-size:14px;color:#111}
+.bar .tg{max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 12px}
+.empty{color:#999;text-align:center;padding:70px 20px;font-size:14px}
+.grp{margin:14px 16px;background:#fff;border-radius:12px;overflow:hidden}
+.it{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #0001;font-size:16px}
+.it:last-child{border:0}
+.fi{border:1px solid #ddd;border-radius:8px;padding:9px;font:inherit;font-size:15px;outline:0}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="wall" id="wall"></div>
+  <div class="island"></div>
+  <div class="status" id="status"><span><b class="clk"></b><svg id="mute" width="16" height="16" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zM10 19a2 2 0 0 0 4 0" fill="currentColor"/><path d="M3 3l18 18" stroke="#fff" stroke-width="4"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="2"/></svg></span>
+    <span><svg width="19" height="12" fill="currentColor"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" width="3" height="12" rx="1" opacity=".3"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1.5 4.2a10 10 0 0 1 14 0M4 7a6.5 6.5 0 0 1 9 0"/><circle cx="8.5" cy="10" r="1" fill="currentColor"/></svg><b class="bt" id="bt"></b></span></div>
+  <div class="screen on" id="lock"><div class="d" id="ld"></div><div class="t clk"></div><div class="hint">위로 밀어 잠금 해제</div></div>
+  <div class="screen" id="home">
+    <div class="widgets"><div><div class="w cal" id="wc"></div><div class="wl">캘린더</div></div><div><div class="w nt" id="wn"></div><div class="wl">메모</div></div></div>
+    <div class="grid" id="grid"></div><div class="dots"><i></i><i></i></div><div class="dock" id="dock"></div>
+  </div>
+  <div class="screen" id="app"></div>
+  <div class="notif" id="nf"></div>
+  <div class="home-bar" id="hb"></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ===================== 개발자 설정 (여기만 수정하세요) ===================== */
+// 별 무늬 배경 생성기 (bg: 바탕색, star: 별 색)
+const starWall = (bg, star) => {
+  const s = `<svg xmlns="http://www.w3.org/2000/svg" width="176" height="176"><g fill="${star}" stroke="${star}" stroke-width="4" stroke-linejoin="round">${[[44,44],[132,44],[88,132],[0,132],[176,132]].map(([x,y])=>`<path transform="translate(${x} ${y})" d="M0-15L4-5 15-4 7 3 9 14 0 8-9 14-7 3-15-4-4-5z"/>`).join("")}</g></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(s)}") 0 0/176px, ${bg}`;
+};
+const CONFIG = {
+  ownerHash: null,   // 관리자 비밀번호 해시 (설정 앱에서 만든 뒤 "내용 내보내기"로 확정)
+  saved: null,       // 내보낸 내용. 값이 있으면 방문자에게는 읽기 전용으로 그대로 보여요
+  wallpaper: starWall("#e5e2de", "#bfbab4"),   // CSS background 값. 이미지는 url("...") 사용 가능
+  statusColor: "#000",        // 상태바 글자색 (어두운 배경이면 "#fff")
+  time: "auto",               // "auto" 또는 "22:39" 처럼 고정
+  date: "auto",               // "auto" 또는 "토요일, 11월 7일"
+  silent: true,               // 무음 아이콘
+  battery: 82,
+  calendar: [{ t: "카페 마감", time: "오후 4:00" }],
+  // 앱 id가 kakao / insta / notes 면 실제 동작, 그 외는 장식(토스트만 표시)
+  apps: [
+    { id: "photos", name: "사진", icon: "photos", bg: "#fff" },
+    { id: "kakao", name: "카카오톡", icon: "kakao", bg: "#fae100", badge: "99+" },
+    { id: "insta", name: "인스타그램", icon: "insta", bg: "radial-gradient(circle at 30% 105%,#fdc468 0,#df4996 45%,#4f5bd5 90%)" },
+    { id: "stay", name: "숙박", icon: "stay", bg: "linear-gradient(#ea5560,#e03a3e)" },
+    { id: "x", name: "X", icon: "x", bg: "linear-gradient(#333,#000)" },
+    { id: "maps", name: "구글 지도", icon: "maps", bg: "#fff" },
+    { id: "etc", name: "기타", icon: "folder", bg: "rgba(255,255,255,.6)" },
+    { id: "settings", name: "설정", icon: "settings", bg: "linear-gradient(#a9a9ae,#6e6e73)" }
+  ],
+  dock: [
+    { id: "phone", name: "전화", icon: "phone", bg: "linear-gradient(#7bea7f,#34c759)" },
+    { id: "msg", name: "메시지", icon: "msg", bg: "linear-gradient(#7bea7f,#34c759)", badge: "1" },
+    { id: "music", name: "음악", icon: "music", bg: "#fff" },
+    { id: "safari", name: "Safari", icon: "safari", bg: "#fff" }
+  ],
+  notification: { enabled: false, delay: 2500, stay: 4500, title: "KakaoTalk", msg: "새 메시지가 도착했어요", time: "지금", appIcon: "kakao", appBg: "#fae100" },
+  // 채팅방은 카카오톡 앱의 ＋ 버튼으로 직접 만들 수 있어요 (아래는 처음에 보이는 예시)
+  kakao: { friends: [
+    { name: "채팅방 1", time: "오후 10:39", chat: [{ me: false, t: "이름은 ✎ 버튼으로 바꿀 수 있어요" }] },
+    { name: "채팅방 2", time: "", chat: [] }
+  ]},
+  insta: {
+    stories: [{ n: "내 스토리", e: "➕" }, { n: "jiwoo", e: "🐶" }, { n: "yuushi", e: "🏔️" }, { n: "sora", e: "☕" }, { n: "hyun", e: "🎸" }],
+    posts: [
+      { user: "jiwoo", e: "🐶", g: "#ffd6a5,#ffadad", likes: 128, caption: "산책 가는 길 🌳" },
+      { user: "sora", e: "☕", g: "#cdb4db,#a2d2ff", likes: 342, caption: "오늘의 카페 투어" },
+      { user: "yuushi", e: "🏔️", g: "#bde0fe,#caffbf", likes: 89, caption: "주말 등산 완료!" }
+    ]
+  },
+  notes: [{ title: "할 일", body: "도서관 책 반납 금요일까지!!\n다음 달 돈 관리\n가을 신메뉴 레시피" }]
+};
+/* ========================================================================== */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const C = CONFIG;
+const petals = [["#f5a623",0],["#f8d71c",45],["#7ed321",90],["#34c38f",135],["#4a90e2",180],["#7b61d1",225],["#d0549c",270],["#e8554e",315]].map(([c,r])=>`<ellipse cy="-9.5" rx="6.2" ry="10.5" fill="${c}" opacity=".8" transform="rotate(${r})"/>`).join("");
+const V = c => `<svg viewBox="0 0 60 60">${c}</svg>`;
+const ICONS = {
+  photos: V(`<g style="mix-blend-mode:multiply" transform="translate(30 30)">${petals}</g>`),
+  kakao: V(`<ellipse cx="30" cy="28" rx="21" ry="17" fill="#3b1e1e"/><path d="M17 40l-3 9 11-6z" fill="#3b1e1e"/><text x="30" y="33" font-size="13" font-weight="900" fill="#fae100" text-anchor="middle" font-family="Arial Black,Arial">TALK</text>`),
+  insta: V(`<rect x="13" y="13" width="34" height="34" rx="10" fill="none" stroke="#fff" stroke-width="3.5"/><circle cx="30" cy="30" r="8" fill="none" stroke="#fff" stroke-width="3.5"/><circle cx="40" cy="20" r="2.3" fill="#fff"/>`),
+  stay: V(`<text x="30" y="37" font-size="19" font-weight="900" fill="#fff" text-anchor="middle">숙박</text>`),
+  x: V(`<path d="M16 15h9l19 30h-9z" fill="#fff"/><path d="M43 15L17 45" stroke="#fff" stroke-width="3"/>`),
+  maps: V(`<defs><linearGradient id="g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#34a853"/><stop offset=".35" stop-color="#4285f4"/><stop offset=".7" stop-color="#ea4335"/><stop offset="1" stop-color="#fbbc04"/></linearGradient></defs><path d="M30 10a14 14 0 0 0-14 14c0 11 14 27 14 27s14-16 14-27A14 14 0 0 0 30 10z" fill="url(#g)"/><circle cx="30" cy="24" r="6" fill="#fff"/>`),
+  folder: V([["#6bc34a",8],["#f5f5f5",21],["#111",34]].map(([c,x],i)=>`<rect x="${10+i*14}" y="12" width="12" height="12" rx="3" fill="${c}"/>`).join("")+[["#7c4dff"],["#111"],["#6a2fd3"]].map(([c],i)=>`<rect x="${10+i*14}" y="30" width="12" height="12" rx="3" fill="${c}"/>`).join("")),
+  phone: V(`<path d="M19 15h6l3 8-4 3a22 22 0 0 0 10 10l3-4 8 3v6a4 4 0 0 1-4 4C28 45 15 32 15 19a4 4 0 0 1 4-4z" fill="#fff"/>`),
+  msg: V(`<ellipse cx="30" cy="28" rx="19" ry="15" fill="#fff"/><path d="M16 38l-4 9 11-5z" fill="#fff"/>`),
+  music: V(`<circle cx="30" cy="30" r="16" fill="none" stroke="#e5383b" stroke-width="4"/><circle cx="30" cy="30" r="12" fill="#e5383b"/><path d="M26 23l12 7-12 7z" fill="#fff"/>`),
+  safari: V(`<circle cx="30" cy="30" r="20" fill="#2f8bf0"/><circle cx="30" cy="30" r="17" fill="none" stroke="#fff" stroke-width="1.2" stroke-dasharray="1 3"/><path d="M40 20L33 33 20 40l7-13z" fill="#fff"/><path d="M40 20L33 33 27 27z" fill="#ff453a"/>`),
+  settings: V(`<circle cx="30" cy="30" r="16" fill="none" stroke="#e4e4e8" stroke-width="8" stroke-dasharray="5.2 4.6"/><circle cx="30" cy="30" r="13" fill="#e4e4e8"/><circle cx="30" cy="30" r="5.5" fill="#76767b"/>`)
+};
+const appBtn = a => `<button class="app" data-id="${a.id}"><div class="ic"><div class="ib" style="background:${a.bg}">${ICONS[a.icon] || ""}</div>${a.badge ? `<i class="bd">${esc(a.badge)}</i>` : ""}</div><span>${esc(a.name)}</span></button>`;
+
+$("#mute").style.display = C.silent ? "" : "none";
+const SKEY = "vphone-settings-v2";
+try { C.ownerHash = C.ownerHash || localStorage.getItem("vphone-ownerhash") || null; } catch (e) {}
+let EDIT = !C.ownerHash;
+try { EDIT = EDIT || localStorage.getItem("vphone-owner") === C.ownerHash; } catch (e) {}
+const SV = C.saved || {};
+if (SV.kakao) C.kakao.friends = SV.kakao;
+if (SV.notes) C.notes = SV.notes;
+let S = { ...(SV.s || {}) };
+if (EDIT) try { S = { ...S, ...JSON.parse(localStorage.getItem(SKEY) || "{}") }; } catch (e) {}
+const saveS = () => { if (!EDIT) return; try { localStorage.setItem(SKEY, JSON.stringify(S)); } catch (e) { toast("저장 공간이 부족해요"); } };
+function applyS() {
+  $("#wall").style.background = S.wall ? `url(${S.wall}) center/cover` : C.wallpaper;
+  $("#wall").classList.toggle("photo", !!S.wall);
+  $("#status").style.setProperty("--sc", S.sc || C.statusColor);
+  $("#bt").textContent = S.battery ?? C.battery;
+}
+applyS();
+function tick() {
+  const d = new Date();
+  const tm = C.time === "auto" ? d.getHours() + ":" + String(d.getMinutes()).padStart(2, "0") : C.time;
+  document.querySelectorAll(".clk").forEach(e => e.textContent = tm);
+  $("#ld").textContent = C.date === "auto" ? d.toLocaleDateString("ko-KR", { weekday: "long", month: "long", day: "numeric" }) : C.date;
+  const dn = d.toLocaleDateString("ko-KR", { weekday: "long" });
+  $("#wc").innerHTML = `<b>${dn}</b><i>${d.getDate()}</i>${C.calendar.slice(0, 1).map(e => `<div class="ev">${esc(e.t)}<div>${esc(e.time)}</div></div>`).join("")}`;
+}
+function widgets() { const n = C.notes[0]; $("#wn").innerHTML = `<h4>메모</h4>${(n ? (n.body || n.title).split("\n") : []).slice(0, 4).map(l => `<p>${esc(l)}</p>`).join("")}`; }
+tick(); widgets(); setInterval(tick, 10000);
+$("#grid").innerHTML = C.apps.map(appBtn).join("");
+$("#dock").innerHTML = C.dock.map(appBtn).join("");
+const real = ["kakao", "insta", "notes", "settings"];
+document.querySelectorAll(".app").forEach(b => b.onclick = () => real.includes(b.dataset.id) ? open(b.dataset.id) : toast("데모용 앱이에요"));
+$("#wn").onclick = () => open("notes");
+$("#wc").onclick = () => toast("데모용 앱이에요");
+
+function toast(t) { const e = $("#toast"); e.textContent = t; e.classList.add("on"); setTimeout(() => e.classList.remove("on"), 1300); }
+function unlock() { $("#lock").classList.remove("on"); $("#home").classList.add("on"); notify(); }
+let y0 = null;
+$("#lock").onclick = unlock;
+$("#lock").ontouchstart = e => y0 = e.touches[0].clientY;
+$("#lock").ontouchend = e => { if (y0 !== null && y0 - e.changedTouches[0].clientY > 40) unlock(); y0 = null; };
+$("#hb").onclick = () => {
+  if ($("#app").classList.contains("on")) { $("#app").classList.remove("on"); widgets(); }
+  else if ($("#home").classList.contains("on")) { $("#home").classList.remove("on"); $("#lock").classList.add("on"); }
+};
+function notify(o) {
+  const N = { ...C.notification, ...o }; if (!N.enabled && !o) return;
+  setTimeout(() => {
+    if (!$("#home").classList.contains("on") || $("#app").classList.contains("on")) return;
+    const nf = $("#nf");
+    nf.innerHTML = `<div class="ib" style="background:${N.appBg}">${ICONS[N.appIcon]}</div><div><b>${esc(N.title)}</b><span>${esc(N.msg)}</span></div><small>${esc(N.time)}</small>`;
+    nf.classList.add("on"); nf.onclick = () => { nf.classList.remove("on"); open("kakao"); };
+    setTimeout(() => nf.classList.remove("on"), N.stay);
+  }, N.delay);
+}
+function open(id) { const a = $("#app"); a.className = "screen on " + id; ({ kakao, insta, notes, settings })[id](a); }
+
+/* ---- 카카오톡 ---- */
+const COLORS = ["#6fa8dc", "#f08a8a", "#93c47d", "#c9a0dc", "#f6b26b", "#76a5af"];
+const nowT = () => new Date().toLocaleTimeString("ko-KR", { hour: "numeric", minute: "2-digit" });
+function ask(title, val, cb) {
+  const m = document.createElement("div"); m.className = "modal";
+  m.innerHTML = `<div><b>${esc(title)}</b><input value="${esc(val)}" maxlength="30"><span class="bt2"><button class="tg">취소</button><button class="tg" style="background:#fee500">확인</button></span></div>`;
+  $(".phone").appendChild(m);
+  const inp = m.querySelector("input"), [no, ok] = m.querySelectorAll("button");
+  const done = v => { m.remove(); if (v) cb(v); };
+  no.onclick = () => done(); ok.onclick = () => done(inp.value.trim()); inp.onkeydown = e => e.key === "Enter" && done(inp.value.trim());
+  inp.focus(); inp.select();
+}
+function kakao(el) {
+  const KEY = "vphone-kakao-v2";
+  if (EDIT) try { const s = localStorage.getItem(KEY); if (s) C.kakao.friends = JSON.parse(s); } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(C.kakao.friends)); } catch (e) {} };
+  const list = () => {
+    const fs = C.kakao.friends;
+    el.innerHTML = `<div class="hd"><b>채팅</b><span class="sp"></span>${EDIT ? '<button id="add">＋</button>' : ""}</div><div class="body">${fs.map((f, i) => `<div class="row" data-i="${i}"><div class="av" style="background:${COLORS[i % COLORS.length]}">${esc(f.name[0] || "?")}</div><div class="fl"><b>${esc(f.name)}</b><span>${esc(f.chat.length ? f.chat[f.chat.length - 1].t : "대화를 시작해보세요")}</span></div><small>${esc(f.time || "")}</small></div>`).join("") || '<div class="empty">＋ 버튼으로 채팅방을 만들어보세요</div>'}</div>`;
+    el.querySelectorAll(".row").forEach(r => r.onclick = () => room(+r.dataset.i));
+    if (EDIT) $("#add").onclick = () => ask("새 채팅방 이름", "", v => { fs.push({ name: v, time: "", chat: [] }); save(); room(fs.length - 1); });
+  };
+  const room = i => {
+    const f = C.kakao.friends[i]; let me = true;
+    el.innerHTML = `<div class="hd" style="background:#b2c7da"><button class="bk">‹</button><b>${esc(f.name)}</b><span class="sp"></span>${EDIT ? '<button id="rn">✎</button><button id="dl">🗑</button>' : ""}</div><div class="body chat" id="ch" style="${EDIT ? "" : "bottom:34px"}"></div>${EDIT ? '<div class="bar"><button class="tg" id="who"></button><input id="in" placeholder="메시지 입력"><button id="sd">전송</button></div>' : ""}`;
+    const ch = $("#ch");
+    const draw = () => { ch.innerHTML = f.chat.map(m => `<div class="m ${m.me ? "me" : ""}">${esc(m.t)}</div>`).join(""); ch.scrollTop = 9e5; };
+    el.querySelector(".bk").onclick = list; draw();
+    if (!EDIT) return;
+    const who = $("#who"), label = () => who.textContent = (me ? "나" : f.name) + " ▾";
+    const send = () => {
+      const v = $("#in").value.trim(); if (!v) return;
+      f.chat.push({ me, t: v }); f.time = nowT(); save(); $("#in").value = ""; draw();
+    };
+    who.onclick = () => { me = !me; label(); };
+    $("#sd").onclick = send; $("#in").onkeydown = e => e.key === "Enter" && send();
+    ch.ondblclick = e => { const b = e.target.closest(".m"); if (b) { f.chat.splice([...ch.children].indexOf(b), 1); save(); draw(); } };
+    $("#rn").onclick = () => ask("채팅방 이름", f.name, v => { f.name = v; save(); room(i); });
+    $("#dl").onclick = () => { C.kakao.friends.splice(i, 1); save(); list(); };
+    label();
+  };
+  list();
+}
+
+/* ---- 설정 ---- */
+const sha = async t => [...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)))].map(b => b.toString(16).padStart(2, "0")).join("");
+const ls = k => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
+function settings(el) {
+  const owner = `<div class="grp"><div class="it" style="flex-direction:column;align-items:stretch;gap:8px">${
+    !C.ownerHash ? '<b>관리자 비밀번호 만들기</b><span style="font-size:13px;color:#777">만들고 “내용 내보내기”까지 해야 다른 사람은 수정할 수 없어요</span><input class="fi" id="pw" type="password" placeholder="비밀번호 (4자 이상)"><button class="tg" id="pm">만들기</button>'
+    : EDIT ? '<b>관리자 모드</b><button class="tg" id="lo">로그아웃 (방문자 화면 미리보기)</button>'
+    : '<b>관리자 로그인</b><span style="font-size:13px;color:#777">관리자만 내용을 수정할 수 있어요</span><input class="fi" id="pw" type="password" placeholder="비밀번호"><button class="tg" id="li" style="background:#fee500">로그인</button>'}</div></div>`;
+  const tools = !EDIT ? "" : `<div class="grp"><div class="it">배경화면 사진<label class="tg">선택<input id="wf" type="file" accept="image/*" hidden></label></div><div class="it">기본 배경으로<button class="tg" id="wr">초기화</button></div></div>
+  <div class="grp"><div class="it">상태바 글자색<button class="tg" id="sc"></button></div><div class="it">배터리 %<input class="fi" id="bn" type="number" min="1" max="100" style="width:70px;text-align:right"></div></div>
+  <div class="grp"><div class="it" style="flex-direction:column;align-items:stretch;gap:8px"><b>카톡 알림 띄우기</b><input class="fi" id="nn" placeholder="보낸 사람 이름"><input class="fi" id="nm" placeholder="메시지"><button class="tg" id="ns" style="padding:10px;background:#fee500">홈 화면에 알림 띄우기</button></div></div>
+  <div class="grp"><div class="it" style="flex-direction:column;align-items:stretch;gap:8px"><b>내용 내보내기</b><button class="tg" id="ex">복사하기</button><div id="exb"></div></div></div>`;
+  el.innerHTML = `<div class="na"><div class="hd"><b>설정</b></div><div class="body">${owner}${tools}</div></div>`;
+  const reload = () => location.reload();
+  if ($("#pm")) $("#pm").onclick = async () => {
+    const v = $("#pw").value; if (v.length < 4) return toast("4자 이상 입력하세요");
+    const h = await sha(v); C.ownerHash = h;
+    try { localStorage.setItem("vphone-ownerhash", h); localStorage.setItem("vphone-owner", h); } catch (e) {}
+    toast("만들었어요. 내용 내보내기를 해주세요"); settings(el);
+  };
+  if ($("#li")) $("#li").onclick = async () => {
+    if (await sha($("#pw").value) === C.ownerHash) { try { localStorage.setItem("vphone-owner", C.ownerHash); } catch (e) {} reload(); } else toast("비밀번호가 달라요");
+  };
+  if ($("#lo")) $("#lo").onclick = () => { try { localStorage.removeItem("vphone-owner"); } catch (e) {} reload(); };
+  if (!EDIT) return;
+  const dark = () => (S.sc || C.statusColor) === "#000";
+  const lab = () => $("#sc").textContent = dark() ? "검정" : "흰색";
+  $("#bn").value = S.battery ?? C.battery; lab();
+  $("#wf").onchange = e => {
+    const file = e.target.files[0]; if (!file) return;
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, 1200 / Math.max(img.width, img.height)), c = document.createElement("canvas");
+      c.width = img.width * k; c.height = img.height * k; c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      S.wall = c.toDataURL("image/jpeg", .85); saveS(); applyS(); URL.revokeObjectURL(url); toast("배경을 바꿨어요");
+    };
+    img.src = url;
+  };
+  $("#wr").onclick = () => { S.wall = ""; saveS(); applyS(); toast("기본 배경으로 돌렸어요"); };
+  $("#sc").onclick = () => { S.sc = dark() ? "#fff" : "#000"; saveS(); applyS(); lab(); };
+  $("#bn").oninput = e => { S.battery = Math.max(1, Math.min(100, +e.target.value || 1)); saveS(); applyS(); };
+  $("#ns").onclick = () => {
+    const n = $("#nn").value.trim(), m = $("#nm").value.trim(); if (!m) return toast("메시지를 입력하세요");
+    $("#app").classList.remove("on"); widgets();
+    notify({ msg: n ? `${n}: ${m}` : m, delay: 400, time: "지금" });
+  };
+  $("#ex").onclick = () => {
+    const t = JSON.stringify({ ownerHash: C.ownerHash, kakao: ls("vphone-kakao-v2") || C.kakao.friends, notes: ls("vphone-notes-v2") || C.notes, s: { sc: S.sc, battery: S.battery } });
+    $("#exb").innerHTML = `<textarea class="fi" id="et" rows="5" readonly style="width:100%">${esc(t)}</textarea>`; $("#et").select();
+    navigator.clipboard?.writeText(t).then(() => toast("복사했어요")).catch(() => {});
+  };
+}
+
+/* ---- 인스타그램 ---- */
+function insta(el) {
+  const I = C.insta;
+  el.innerHTML = `<div class="hd"><span class="logo">Instagram</span><span class="sp"></span><span>♡ ✈︎</span></div><div class="body"><div class="stories">${I.stories.map(s => `<div class="st"><i><b>${s.e}</b></i>${esc(s.n)}</div>`).join("")}</div>${I.posts.map((p, i) => `<div class="post"><div class="u"><div class="av" style="background:linear-gradient(45deg,#feda75,#d62976)">${p.e}</div>${esc(p.user)}</div><div class="pic" style="background:linear-gradient(135deg,${p.g})" data-i="${i}">${p.e}</div><div class="a"><button data-l="${i}">♡</button><span>💬</span><span>➤</span></div><div class="c"><b id="lk${i}">좋아요 ${p.likes}개</b><br><b>${esc(p.user)}</b> ${esc(p.caption)}</div></div>`).join("")}</div>`;
+  const like = i => { const p = I.posts[i]; p.liked = !p.liked; p.likes += p.liked ? 1 : -1; el.querySelector(`[data-l="${i}"]`).textContent = p.liked ? "❤️" : "♡"; $("#lk" + i).textContent = `좋아요 ${p.likes}개`; };
+  el.querySelectorAll("[data-l]").forEach(b => b.onclick = () => like(+b.dataset.l));
+  el.querySelectorAll(".pic").forEach(b => b.ondblclick = () => { if (!I.posts[+b.dataset.i].liked) like(+b.dataset.i); });
+}
+
+/* ---- 메모 ---- */
+function notes(el) {
+  const KEY = "vphone-notes-v2";
+  if (EDIT) try { const s = localStorage.getItem(KEY); if (s) C.notes = JSON.parse(s); } catch (e) {}
+  const save = () => { if (!EDIT) return; try { localStorage.setItem(KEY, JSON.stringify(C.notes)); } catch (e) {} };
+  const list = () => {
+    el.innerHTML = `<div class="na"><div class="hd"><b>메모</b><span class="sp"></span>${EDIT ? '<button id="nw">✎</button>' : ""}</div><div class="body"><div class="nl">${C.notes.map((n, i) => `<div class="ni" data-i="${i}"><b>${esc(n.title || "새로운 메모")}</b><span>${esc(n.body || "추가 텍스트 없음")}</span></div>`).join("") || '<div class="ni"><span>메모가 없어요</span></div>'}</div></div></div>`;
+    el.querySelectorAll(".ni[data-i]").forEach(r => r.onclick = () => edit(+r.dataset.i));
+    if (EDIT) $("#nw").onclick = () => { C.notes.unshift({ title: "", body: "" }); save(); edit(0); };
+  };
+  const edit = i => {
+    const n = C.notes[i], ro = EDIT ? "" : "readonly";
+    el.innerHTML = `<div class="na"><div class="hd"><button class="bk">‹</button><span class="sp"></span>${EDIT ? '<button id="dl">🗑</button>' : ""}</div><div class="ed"><input id="nt" ${ro} placeholder="제목" value="${esc(n.title)}"><textarea id="nb" ${ro} placeholder="내용을 입력하세요">${esc(n.body)}</textarea></div></div>`;
+    if (EDIT) {
+      $("#nt").oninput = e => { n.title = e.target.value; save(); };
+      $("#nb").oninput = e => { n.body = e.target.value; save(); };
+      $("#dl").onclick = () => { C.notes.splice(i, 1); save(); list(); };
+    }
+    el.querySelector(".bk").onclick = () => { if (EDIT && !n.title && !n.body) { C.notes.splice(i, 1); save(); } list(); };
+  };
+  list();
+}
+</script>
+</body>
+</html>
